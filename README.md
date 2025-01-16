@@ -1,9 +1,9 @@
-# Name: 
+# Name: Myles Amos 
 
 ## About Me
-* School Email: 
-* Dream Career: 
-* Hidden Talent: 
+* School Email: amosm8542@durhamtech.edu
+* Dream Career: Software Developer
+* Hidden Talent: I can write with my right hand but I play basketball with my left hand.
 
 ## Course Information
 * Semester: 
