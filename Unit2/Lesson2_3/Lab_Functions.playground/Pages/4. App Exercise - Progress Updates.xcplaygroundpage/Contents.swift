@@ -9,10 +9,37 @@
  
  Call the function a number of times, passing in different values of `steps` and `goal`. Observe the printouts and make sure what is printed to the console is what you would expect for the parameters passsed in.
  */
+func progressUpdate(steps: Int, goal: Int) {
+     let percentOfGoal: Double = (Double(steps)/Double(goal)) * 100
+    
+     if percentOfGoal < 10 {
+         print("You're off to a good start.")
+     } else if percentOfGoal < 50 {
+         print("You're almost halfway there!")
+     } else if percentOfGoal < 90 {
+         print("You're almost there!")
+     } else if percentOfGoal > 100 {
+         print("You beat your goal!")
+     }
+}
 
-
+progressUpdate(steps: 50, goal: 10000)
+progressUpdate(steps: 4324, goal: 10000)
+progressUpdate(steps: 7587, goal: 10000)
+progressUpdate(steps: 12543, goal: 10000)
 //:  Your fitness tracking app is going to help runners stay on pace to reach their goals. Write a function called pacing that takes four `Double` parameters called `currentDistance`, `totalDistance`, `currentTime`, and `goalTime`. Your function should calculate whether or not the user is on pace to hit or beat `goalTime`. If yes, print "Keep it up!", otherwise print "You've got to push it just a bit harder!"
+func pacing(currentDistance: Double, totalDistance: Double, currentTime: Double, goalTime: Double) {
+    let requiredSpeed = totalDistance / goalTime
+    let currentSpeed = currentDistance / currentTime
+    if currentSpeed < requiredSpeed {
+        print("You've got to push it just a bit harder!")
+    } else {
+        print("Keep it up!")
+    }
+}
 
+pacing(currentDistance: 9, totalDistance: 34, currentTime: 16, goalTime: 90)
+pacing(currentDistance: 3, totalDistance: 50, currentTime: 9, goalTime: 100)
 
 /*:
 [Previous](@previous)  |  page 4 of 6  |  [Next: Exercise - Return Values](@next)
