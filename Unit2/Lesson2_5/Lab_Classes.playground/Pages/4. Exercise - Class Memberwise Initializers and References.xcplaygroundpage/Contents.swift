@@ -11,18 +11,23 @@ class Spaceship {
     func moveLeft() {
         position -= 1
     }
-
+    
     func moveRight() {
         position += 1
     }
-
+    
     func wasHit() {
         health -= 5
-        if health <= 0 {
-            print("Sorry, your ship was hit one too many times. Do you want to play again?")
-        }
+    }
+    
+    init(name: String, health: Int, position: Int) {
+        self.name = name
+        self.health = health
+        self.position = position
     }
 }
+
+let falcon = Spaceship(name: "Falcon", health: 100, position: 0)
 
 class Fighter: Spaceship {
     let weapon: String
@@ -35,11 +40,17 @@ class Fighter: Spaceship {
             print("You have no more fire power.")
         }
     }
+    
+    init(name: String, health: Int, position: Int, wepon: String, remainingFirePower: Int ) {
+        self.weapon = wepon
+        self.remainingFirePower = remainingFirePower
+        super.init(name: name, health: health, position: position)
+    }
 }
 
 class ShieldedShip: Fighter {
     var shieldStrength: Int
-
+    
     override func wasHit() {
         if shieldStrength > 0 {
             shieldStrength -= 5
@@ -47,12 +58,45 @@ class ShieldedShip: Fighter {
             super.wasHit()
         }
     }
+    
+    init(name: String, health: Int, position: Int, wepon: String, remainingFirePower: Int, shieldStrength: Int) {
+        self.shieldStrength = shieldStrength
+        super.init(name: name, health: health, position: position, wepon: wepon, remainingFirePower: remainingFirePower)
+    }
 }
+
+let defender = ShieldedShip(name: "Defender", health: 100, position: 0, wepon: "Cannon", remainingFirePower: 10, shieldStrength: 25)
+
+let sameShip = falcon
+print(sameShip.position)
+print(falcon.position)
+sameShip.moveLeft()
+print(sameShip.position)
+print(falcon.position)
+
+print("ShieldedShip name: \(defender.name), Health: \(defender.health), Position: \(defender.position), Weapon: \(defender.weapon), Remaining Fire Power: \(defender.remainingFirePower), Shield Strength: \(defender.shieldStrength)")
 /*:
  Note that each class above has an error by the class declaration that says "Class has no initializers." Unlike structs, classes do not come with memberwise initializers because the standard memberwise initializers don't always play nicely with inheritance. You can get rid of the error by providing default values for everything, but it is common, and better practice, to simply write your own initializer. Go to the declaration of `Spaceship` and add an initializer that takes in an argument for each property on `Spaceship` and sets the properties accordingly.
 
  Then create an instance of `Spaceship` below called `falcon`. Use the memberwise initializer you just created. The ship's name should be "Falcon."
  */
+//class Spaceship {
+//    let name: String
+//    var health: Int
+//    var position: Int
+//
+//    // Custom initializer for Spaceship
+//    init(name: String, health: Int, position: Int) {
+//        self.name = name
+//        self.health = health
+//        self.position = position
+//    }
+//}
+//
+//// Create an instance of Spaceship called falcon
+//let falcon = Spaceship(name: "Falcon", health: 100, position: 0)
+
+print("Spaceship name: \(falcon.name), Health: \(falcon.health), Position: \(falcon.position)")
 
 
 /*:
@@ -60,18 +104,27 @@ class ShieldedShip: Fighter {
 
  Then create an instance of `Fighter` below called `destroyer`. Use the memberwise initializer you just created. The ship's name should be "Destroyer."
  */
-
+//class Fighter: Spaceship {
+//    let weapon: String
+//    var remainingFirePower: Int
+//
+//
+//    init(weapon: String, remainingFirePower: Int) {
+//        self.weapon = weapon
+//        self.remainingFirePower = remainingFirePower
+//        super.init(name: "Destroyer", health: health, position: position)
+//    }
+//print("Fighter name: \(destroyer.name), Health: \(destroyer.health), Position: \(destroyer.position), Weapon: \(destroyer.weapon), Remaining Fire Power: \(destroyer.remainingFirePower)")
 
 /*:
  Now go add an initializer to `ShieldedShip` that takes an argument for each property on `ShieldedShip`, `Fighter`, and `Spaceship`, and sets the properties accordingly. Remember that you can call through to the initializer on `Fighter` using `super.init`.
 
  Then create an instance of `ShieldedShip` below called `defender`. Use the memberwise initializer you just created. The ship's name should be "Defender."
  */
-
+print("ShieldedShip name: \(defender.name), Health: \(defender.health), Position: \(defender.position), Weapon: \(defender.weapon), Remaining Fire Power: \(defender.remainingFirePower), Shield Strength: \(defender.shieldStrength)")
 
 //:  Create a new constant named `sameShip` and set it equal to `falcon`. Print out the position of `sameShip` and `falcon`, then call `moveLeft()` on `sameShip` and print out the position of `sameShip` and `falcon` again. Did both positions change? Why? If both were structs instead of classes, would it be the same? Why or why not? Provide your answer in a comment or print statement below.
-
-
+//Given that they both point to the same memory address, the position was updated in both Falcon and SameShip. All instances referring to the same address will change if one is modified. The literal value would be copied if they were structed rather than classes and one variable was assigned to another. When a variable is set to equal another struct variable, the value is copied. Changes made to one variable will therefore only affect that one and not the others.
 /*:
  _Copyright © 2023 Apple Inc._
 
