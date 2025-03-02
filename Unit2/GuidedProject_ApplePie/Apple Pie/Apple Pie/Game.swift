@@ -16,6 +16,7 @@ struct Game {
       guessedLetters.append(letter)
       if !word.contains(letter) {
         incorrectMovesRemaining -= 1
+        
       }
     }
     

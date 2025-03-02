@@ -11,7 +11,6 @@ var listOfWords = ["buccaneer", "swift", "glorious", "incandescent", "bug", "pro
 
 let incorrectMovesAllowed = 7
 
-
 class ViewController: UIViewController {
     
     var totalWins = 0 {
@@ -24,6 +23,9 @@ class ViewController: UIViewController {
             newRound()
         }
     }
+    
+    var score = 0 // Declare score variable
+    
     @IBOutlet var treeImageView: UIImageView!
     @IBOutlet var correctWordLabel: UILabel!
     @IBOutlet var scoreLabel: UILabel!
@@ -34,12 +36,12 @@ class ViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         newRound()
-        // Do any additional setup after loading the view.
     }
     
     var currentGame: Game!
 
     func newRound() {
+        // No need to reset the score anymore.
         if !listOfWords.isEmpty {
             let newWord = listOfWords.removeFirst()
             currentGame = Game(word: newWord, incorrectMovesRemaining: incorrectMovesAllowed, guessedLetters: [])
@@ -51,11 +53,10 @@ class ViewController: UIViewController {
     }
     
     func enableLetterButtons(_ enable: Bool) {
-      for button in letterButtons {
-        button.isEnabled = enable
-      }
+        for button in letterButtons {
+            button.isEnabled = enable
+        }
     }
-
 
     func updateUI() {
         var letters = [String]()
@@ -64,26 +65,40 @@ class ViewController: UIViewController {
         }
         let wordWithSpacing = letters.joined(separator: " ")
         correctWordLabel.text = wordWithSpacing
-        scoreLabel.text = "Wins: \(totalWins), Losses: \(totalLosses)"
+        
+        // Display wins and losses in one label and the score in another label.
+        scoreLabel.text = "Score: \(score)"
+        pointSystem.text = "Wins: \(totalWins), Losses: \(totalLosses)"
+        
         treeImageView.image = UIImage(named: "Tree \(currentGame.incorrectMovesRemaining)")
     }
+
     func updateGameState() {
-      if currentGame.incorrectMovesRemaining == 0 {
-        totalLosses += 1
-      } else if currentGame.word == currentGame.formattedWord {
-        totalWins += 1
-      } else {
-        updateUI()
-      }
+        // Check if the game is over and adjust the win/loss counters
+        if currentGame.incorrectMovesRemaining == 0 {
+            totalLosses += 1
+        } else if currentGame.word == currentGame.formattedWord {
+            totalWins += 1
+        }
     }
 
     @IBAction func letterButtonPressed(_ sender: UIButton) {
         sender.isEnabled = false
         let letterString = sender.configuration!.title!
-            let letter = Character(letterString.lowercased())
+        let letter = Character(letterString.lowercased())
+        
+        // Guess the letter
         currentGame.playerGuessed(letter: letter)
-        updateGameState()
-    }
-    
-}
+        
+        // Update score based on whether the guess was correct or not
+        if currentGame.word.contains(letter) {
+            score += 10 // Increase score for a correct guess
+        } else {
+            score -= 10 // Decrease score for an incorrect guess
+        }
 
+        // Update the game state (win/loss)
+        updateGameState()
+        updateUI()
+    }
+}
